@@ -46,19 +46,34 @@ PUT /fluentd
   },
   "mappings": {
     "properties": {
-      "agent": {
+      "remote": {
+        "type": "keyword"
+      },
+      "host": {
+        "type": "keyword"
+      },
+      "user": {
         "type": "text"
       },
-      "asd": {
+      "time": {
+        "type": "date"
+      },
+      "method": {
+        "type": "keyword"
+      },
+      "path": {
         "type": "text"
       },
       "code": {
+        "type": "keyword"
+      },
+      "size": {
+        "type": "integer"
+      },
+      "referer": {
         "type": "text"
       },
-      "foo": {
-        "type": "text"
-      },
-      "host": {
+      "agent": {
         "type": "text"
       },
       "http_x_forwarded_for": {
@@ -118,45 +133,6 @@ PUT /fluentd
             "type": "text"
           }
         }
-      },
-      "level": {
-        "type": "text"
-      },
-      "log": {
-        "type": "text"
-      },
-      "method": {
-        "type": "text"
-      },
-      "name": {
-        "type": "text"
-      },
-      "path": {
-        "type": "text"
-      },
-      "referer": {
-        "type": "text"
-      },
-      "remote": {
-        "type": "text"
-      },
-      "size": {
-        "type": "text"
-      },
-      "status": {
-        "type": "text"
-      },
-      "stream": {
-        "type": "text"
-      },
-      "time": {
-        "type": "date"
-      },
-      "title": {
-        "type": "text"
-      },
-      "user": {
-        "type": "text"
       }
     }
   }
