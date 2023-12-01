@@ -10,13 +10,14 @@ spec:
 apiVersion: logging.banzaicloud.io/v1beta1
 kind: Output
 metadata:
-  name: es-output
+  name: es-output-local
 spec:
   elasticsearch:
     host: quickstart-es-http.logging.svc.cluster.local
     port: 9200
     scheme: https
     ssl_verify: false
+    index_name: logging_operator_local
     ssl_version: TLSv1_2
     user: elastic
     password:
@@ -50,4 +51,50 @@ spec:
         labels:
           app.kubernetes.io/name: log-generator
   localOutputRefs:
-    - es-output
+    - es-output-local
+---
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: ClusterOutput
+metadata:
+  name: es-cluster-output
+spec:
+  elasticsearch:
+    host: quickstart-es-http.logging.svc.cluster.local
+    port: 9200
+    scheme: https
+    ssl_verify: false
+    ssl_version: TLSv1_2
+    index_name: logging_operator_global
+    user: elastic
+    password:
+      valueFrom:
+        secretKeyRef:
+          name: quickstart-es-elastic-user
+          key: elastic
+    buffer:
+      timekey: 5s
+      timekey_wait: 2s
+      timekey_use_utc: true
+---
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: ClusterFlow
+metadata:
+  name: es-cluster-flow
+spec:
+  filters:
+    - parser:
+        remove_key_name_field: true
+        reserve_data: true
+        key_name: log
+        parse:
+          type: regexp
+          expression: '/^(?<remote>[^ ]*) (?<host>[^ ]*) (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)"(?:\s+(?<http_x_forwarded_for>[^ ]+))?)?$/'
+          time_format: '%d/%b/%Y:%H:%M:%S %z'
+          time_key: time
+  match:
+    - select:
+        namespaces:
+          - logging
+          - logging-second
+  globalOutputRefs:
+    - es-cluster-output

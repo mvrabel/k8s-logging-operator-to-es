@@ -39,104 +39,12 @@ This removes the duplicate fields xxx.keyword
 go to https://localhost:5601/app/dev_tools#/console and run this:
 
 ```
-PUT /fluentd
-{
-  "settings": {
-    "number_of_shards": 1
-  },
-  "mappings": {
-    "properties": {
-      "remote": {
-        "type": "keyword"
-      },
-      "host": {
-        "type": "keyword"
-      },
-      "user": {
-        "type": "text"
-      },
-      "time": {
-        "type": "date"
-      },
-      "method": {
-        "type": "keyword"
-      },
-      "path": {
-        "type": "text"
-      },
-      "code": {
-        "type": "keyword"
-      },
-      "size": {
-        "type": "integer"
-      },
-      "referer": {
-        "type": "text"
-      },
-      "agent": {
-        "type": "text"
-      },
-      "http_x_forwarded_for": {
-        "type": "text"
-      },
-      "kubernetes": {
-        "properties": {
-          "container_hash": {
-            "type": "text"
-          },
-          "container_image": {
-            "type": "text"
-          },
-          "container_name": {
-            "type": "text"
-          },
-          "docker_id": {
-            "type": "text"
-          },
-          "host": {
-            "type": "text"
-          },
-          "labels": {
-            "properties": {
-              "app": {
-                "properties": {
-                  "kubernetes": {
-                    "properties": {
-                      "io/instance": {
-                        "type": "text"
-                      },
-                      "io/name": {
-                        "type": "text"
-                      }
-                    }
-                  }
-                }
-              },
-              "app-kubernetes-io/instance": {
-                "type": "text"
-              },
-              "app-kubernetes-io/name": {
-                "type": "text"
-              },
-              "pod-template-hash": {
-                "type": "text"
-              }
-            }
-          },
-          "namespace_name": {
-            "type": "text"
-          },
-          "pod_id": {
-            "type": "text"
-          },
-          "pod_name": {
-            "type": "text"
-          }
-        }
-      }
-    }
-  }
-}
+PUT /logging_operator_local
+<copy content of index_template.json>
+```
+```
+PUT /logging_operator_global
+<copy content of index_template.json>
 ```
 
 ### Logging operator
@@ -146,6 +54,7 @@ helm upgrade --install --wait --namespace logging logging-operator oci://ghcr.io
 kubectl apply -n logging -f logging.yaml
 # wait for deployment
 helm upgrade --install --wait --namespace logging log-generator oci://ghcr.io/kube-logging/helm-charts/log-generator
+helm upgrade --install --wait --namespace logging-second log-generator oci://ghcr.io/kube-logging/helm-charts/log-generator
 ```
 
 The logging generator will send data into index `fluentd`. 

@@ -1,0 +1,94 @@
+{
+  "mappings": {
+    "properties": {
+      "remote": {
+        "type": "keyword"
+      },
+      "host": {
+        "type": "keyword"
+      },
+      "user": {
+        "type": "text"
+      },
+      "time": {
+        "type": "date"
+      },
+      "method": {
+        "type": "keyword"
+      },
+      "path": {
+        "type": "text"
+      },
+      "code": {
+        "type": "keyword"
+      },
+      "size": {
+        "type": "integer"
+      },
+      "referer": {
+        "type": "text"
+      },
+      "agent": {
+        "type": "text"
+      },
+      "http_x_forwarded_for": {
+        "type": "text"
+      },
+      "kubernetes": {
+        "properties": {
+          "container_hash": {
+            "type": "text"
+          },
+          "container_image": {
+            "type": "text"
+          },
+          "container_name": {
+            "type": "text"
+          },
+          "docker_id": {
+            "type": "text"
+          },
+          "host": {
+            "type": "text"
+          },
+          "labels": {
+            "properties": {
+              "app": {
+                "properties": {
+                  "kubernetes": {
+                    "properties": {
+                      "io/instance": {
+                        "type": "text"
+                      },
+                      "io/name": {
+                        "type": "text"
+                      }
+                    }
+                  }
+                }
+              },
+              "app-kubernetes-io/instance": {
+                "type": "text"
+              },
+              "app-kubernetes-io/name": {
+                "type": "text"
+              },
+              "pod-template-hash": {
+                "type": "text"
+              }
+            }
+          },
+          "namespace_name": {
+            "type": "text"
+          },
+          "pod_id": {
+            "type": "text"
+          },
+          "pod_name": {
+            "type": "text"
+          }
+        }
+      }
+    }
+  }
+}
